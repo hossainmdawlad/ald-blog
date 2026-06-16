@@ -1,0 +1,408 @@
+/**
+ * ALD Blog — Non-Critical CSS
+ * This file is loaded asynchronously (deferred) to avoid render-blocking.
+ * All above-the-fold styles are in style.css (inlined).
+ *
+ * @package ALD_Blog
+ */
+
+/* --- Additional Typography --- */
+.entry-content pre {
+    tab-size: 4;
+}
+
+.entry-content figure {
+    margin: var(--space-6) 0;
+}
+
+.entry-content figcaption {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    text-align: center;
+    margin-top: var(--space-2);
+}
+
+.entry-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: var(--space-6) 0;
+    font-size: var(--text-sm);
+}
+
+.entry-content th,
+.entry-content td {
+    padding: var(--space-3) var(--space-4);
+    border: 1px solid var(--color-border);
+    text-align: left;
+}
+
+.entry-content th {
+    background: var(--color-bg-alt);
+    font-weight: 600;
+}
+
+.entry-content tr:nth-child(even) {
+    background: var(--color-bg-alt);
+}
+
+/* --- Gallery --- */
+.gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: var(--space-4);
+    margin: var(--space-6) 0;
+}
+
+.gallery-item {
+    margin: 0;
+}
+
+.gallery-caption {
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+    margin-top: var(--space-1);
+}
+
+/* --- Widgets --- */
+.widget_calendar table {
+    width: 100%;
+}
+
+.widget_calendar caption {
+    font-weight: 600;
+    margin-bottom: var(--space-2);
+}
+
+.widget_calendar th,
+.widget_calendar td {
+    text-align: center;
+    padding: var(--space-1);
+}
+
+.widget_recent_entries li {
+    display: flex;
+    flex-direction: column;
+}
+
+.widget_recent_entries .post-date {
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+}
+
+/* --- Tag Cloud --- */
+.tagcloud {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+}
+
+.tagcloud a {
+    display: inline-block;
+    padding: var(--space-1) var(--space-3);
+    background: var(--color-bg-alt);
+    border-radius: var(--radius-sm);
+    font-size: var(--text-sm) !important;
+    text-decoration: none;
+    color: var(--color-text);
+}
+
+.tagcloud a:hover {
+    background: var(--color-primary);
+    color: #fff;
+}
+
+/* --- Author Box --- */
+.author-box {
+    display: flex;
+    gap: var(--space-5);
+    padding: var(--space-6);
+    background: var(--color-bg-alt);
+    border-radius: var(--radius-md);
+    margin: var(--space-8) 0;
+}
+
+.author-box__avatar {
+    flex-shrink: 0;
+}
+
+.author-box__avatar img {
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+}
+
+.author-box__info h3 {
+    font-size: var(--text-lg);
+    margin-bottom: var(--space-2);
+}
+
+.author-box__bio {
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+}
+
+/* --- Related Posts --- */
+.related-posts {
+    margin-top: var(--space-10);
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--color-border);
+}
+
+.related-posts__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: var(--space-5);
+}
+
+.related-post-card {
+    background: var(--color-bg-alt);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+}
+
+.related-post-card img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+}
+
+.related-post-card__content {
+    padding: var(--space-4);
+}
+
+.related-post-card__title {
+    font-size: var(--text-base);
+    margin-bottom: var(--space-2);
+}
+
+.related-post-card__title a {
+    text-decoration: none;
+    color: var(--color-text);
+}
+
+/* --- Dark Mode Support (optional) --- */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --color-text: #e2e8f0;
+        --color-text-secondary: #a0aec0;
+        --color-text-muted: #718096;
+        --color-bg: #1a202c;
+        --color-bg-alt: #2d3748;
+        --color-border: #4a5568;
+        --color-border-dark: #718096;
+    }
+}
+
+/* --- Responsive Images in Content --- */
+.entry-content img {
+    border-radius: var(--radius-sm);
+}
+
+/* --- WordPress Gallery Block --- */
+.wp-block-gallery {
+    gap: var(--space-4);
+}
+
+/* --- Embed Containers --- */
+.wp-block-embed__wrapper {
+    position: relative;
+    padding-bottom: 56.25%;
+    height: 0;
+    overflow: hidden;
+}
+
+.wp-block-embed__wrapper iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+/* --- Code Block Styling --- */
+.wp-block-code {
+    background: var(--color-bg-dark);
+    color: #e2e8f0;
+    padding: var(--space-5);
+    border-radius: var(--radius-md);
+    overflow-x: auto;
+}
+
+.wp-block-code code {
+    background: none;
+    padding: 0;
+    color: inherit;
+}
+
+/* --- Button Block --- */
+.wp-block-button__link {
+    display: inline-block;
+    padding: var(--space-3) var(--space-6);
+    background: var(--color-primary);
+    color: #fff;
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+    font-weight: 600;
+    transition: background var(--transition-fast);
+}
+
+.wp-block-button__link:hover {
+    background: var(--color-primary-dark);
+    color: #fff;
+}
+
+/* --- Cover Block --- */
+.wp-block-cover {
+    border-radius: var(--radius-md);
+    overflow: hidden;
+}
+
+/* --- Separator --- */
+.wp-block-separator {
+    border: none;
+    border-top: 2px solid var(--color-border);
+    margin: var(--space-8) 0;
+}
+
+/* --- File Download Block --- */
+.wp-block-file a {
+    display: inline-block;
+    padding: var(--space-3) var(--space-5);
+    background: var(--color-bg-alt);
+    border: 2px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+/* --- Latest Posts Block --- */
+.wp-block-latest-posts li {
+    padding: var(--space-3) 0;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.wp-block-latest-posts__post-date {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+}
+
+/* --- Search Block --- */
+.wp-block-search__input {
+    padding: var(--space-3) var(--space-4);
+    border: 2px solid var(--color-border);
+    border-radius: var(--radius-sm);
+}
+
+.wp-block-search__button {
+    padding: var(--space-3) var(--space-5);
+    background: var(--color-primary);
+    color: #fff;
+    border: none;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    cursor: pointer;
+}
+
+/* --- Social Links Block --- */
+.wp-block-social-links {
+    gap: var(--space-2);
+}
+
+/* --- Post Navigation --- */
+.post-navigation .nav-links {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-4);
+}
+
+.post-navigation .nav-previous a,
+.post-navigation .nav-next a {
+    display: block;
+    padding: var(--space-4);
+    background: var(--color-bg-alt);
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    color: var(--color-text);
+    transition: background var(--transition-fast);
+}
+
+.post-navigation .nav-previous a:hover,
+.post-navigation .nav-next a:hover {
+    background: var(--color-border);
+}
+
+.post-navigation .nav-sub {
+    display: block;
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: var(--space-1);
+}
+
+.post-navigation .nav-next {
+    text-align: right;
+}
+
+/* --- Comments --- */
+.comment-respond {
+    margin-top: var(--space-8);
+}
+
+.comment-reply-title {
+    font-size: var(--text-xl);
+    margin-bottom: var(--space-4);
+}
+
+.logged-in-as {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-4);
+}
+
+/* --- Sticky Header Shadow on Scroll --- */
+.site-header.is-scrolled {
+    box-shadow: var(--shadow-md);
+}
+
+/* --- Loading Skeleton (for potential infinite scroll) --- */
+.skeleton {
+    background: linear-gradient(90deg, var(--color-bg-alt) 25%, var(--color-border) 50%, var(--color-bg-alt) 75%);
+    background-size: 200% 100%;
+    animation: skeleton-loading 1.5s infinite;
+    border-radius: var(--radius-sm);
+}
+
+@keyframes skeleton-loading {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+/* --- Print Styles --- */
+@media print {
+    .site-header,
+    .site-footer,
+    .sidebar,
+    .ad-container,
+    .comments-area,
+    .post-navigation,
+    .pagination,
+    .back-to-top,
+    .reading-progress {
+        display: none !important;
+    }
+
+    .content-sidebar-wrap {
+        display: block;
+    }
+
+    .entry-content {
+        max-width: 100%;
+    }
+
+    a[href]::after {
+        content: " (" attr(href) ")";
+        font-size: 0.8em;
+        color: var(--color-text-muted);
+    }
+}
