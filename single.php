@@ -1,6 +1,6 @@
 <?php
 /**
- * The single post template
+ * Single article template
  *
  * @package ALD_Blog
  */
@@ -8,99 +8,95 @@
 get_header();
 ?>
 
-<div class="container">
+<main class="site-content single-article-page" role="main">
+    <div class="container">
 
-    <?php
-    while ( have_posts() ) :
-        the_post();
-        ?>
+        <?php while ( have_posts() ) : the_post(); ?>
 
-        <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
+        <article id="post-<?php the_ID(); ?>" <?php post_class( 'single-article' ); ?>>
 
-            <div class="content-sidebar-wrap">
-
-                <div class="content-area" id="primary-content">
-
-                    <?php ald_blog_breadcrumbs(); ?>
-
-                    <header class="entry-header">
-                        <?php the_title( '<h1 class="entry-title">', '</h1>' ); ?>
-                        <?php ald_blog_post_meta(); ?>
-                    </header>
-
-                    <?php if ( has_post_thumbnail() ) : ?>
-                        <div class="post-thumbnail">
-                            <?php
-                            the_post_thumbnail(
-                                'ald-blog-featured',
-                                array(
-                                    'alt' => get_the_title(),
-                                    'loading' => 'eager', // Featured image is above the fold
-                                )
-                            );
-                            ?>
-                        </div>
-                    <?php endif; ?>
-
-                    <?php ald_blog_ad_container( 'header', 'ad-container--below-title' ); ?>
-
-                    <div class="entry-content">
-                        <?php
-                        the_content();
-
-                        wp_link_pages( array(
-                            'before' => '<div class="page-links">' . __( 'Pages:', 'ald-blog' ),
-                            'after'  => '</div>',
-                        ) );
-                        ?>
-                    </div>
-
-                    <?php ald_blog_ad_container( 'content', 'ad-container--in-content' ); ?>
-
-                    <footer class="entry-footer">
-                        <?php if ( has_tag() ) : ?>
-                            <div class="post-tags">
-                                <strong><?php esc_html_e( 'Tags:', 'ald-blog' ); ?></strong>
-                                <?php the_tags( '', ', ', '' ); ?>
-                            </div>
-                        <?php endif; ?>
-
-                        <?php if ( has_category() && ! is_category() ) : ?>
-                            <div class="post-categories-footer">
-                                <strong><?php esc_html_e( 'Categories:', 'ald-blog' ); ?></strong>
-                                <?php the_category( ', ' ); ?>
-                            </div>
-                        <?php endif; ?>
-                    </footer>
-
-                    <nav class="post-navigation" aria-label="<?php esc_attr_e( 'Post Navigation', 'ald-blog' ); ?>">
-                        <div class="nav-links">
-                            <div class="nav-previous">
-                                <?php previous_post_link( '<a href="%link" rel="prev">', '</a>' ); ?>
-                            </div>
-                            <div class="nav-next">
-                                <?php next_post_link( '<a href="%link" rel="next">', '</a>' ); ?>
-                            </div>
-                        </div>
-                    </nav>
-
+            <!-- Article Header -->
+            <header class="single-header">
+                <div class="single-meta-top">
                     <?php
-                    if ( comments_open() || get_comments_number() ) :
-                        comments_template();
-                    endif;
-                    ?>
+                    $cats = get_the_category();
+                    if ( $cats ) :
+                        ?>
+                        <a href="<?php echo esc_url( get_category_link( $cats[0]->term_id ) ); ?>" class="cat-badge lg">
+                            <?php echo esc_html( $cats[0]->name ); ?>
+                        </a>
+                    <?php endif; ?>
+                    <span class="read-time"><?php esc_html_e( 'Read time:', 'ald-blog' ); ?> <?php echo ald_blog_reading_time(); ?> min</span>
+                </div>
 
-                </div><!-- .content-area -->
+                <h1 class="single-title"><?php the_title(); ?></h1>
 
-                <?php get_sidebar(); ?>
+                <div class="single-meta">
+                    <span class="author"><?php the_author(); ?></span>
+                    <span class="separator">•</span>
+                    <time datetime="<?php echo get_the_date( 'c' ); ?>"><?php echo get_the_date(); ?></time>
+                </div>
 
-            </div><!-- .content-sidebar-wrap -->
+                <!-- Action Buttons -->
+                <div class="single-actions">
+                    <button class="action-btn bookmark-btn" id="bookmarkBtn" title="Bookmark">
+                        <span class="heart-icon">♡</span>
+                        <span class="label"><?php esc_html_e( 'Bookmark', 'ald-blog' ); ?></span>
+                    </button>
+                    <button class="action-btn font-size-btn" id="fontSizeBtn" title="Font size">
+                        <span class="label"><?php esc_html_e( 'Font Size', 'ald-blog' ); ?></span>
+                        <select id="fontSizeSelect">
+                            <option value="sm"><?php esc_html_e( 'Small', 'ald-blog' ); ?></option>
+                            <option value="base" selected><?php esc_html_e( 'Medium', 'ald-blog' ); ?></option>
+                            <option value="lg"><?php esc_html_e( 'Large', 'ald-blog' ); ?></option>
+                            <option value="xl"><?php esc_html_e( 'Extra Large', 'ald-blog' ); ?></option>
+                        </select>
+                    </button>
+                    <button class="action-btn print-btn" onclick="window.print()" title="Print">
+                        <span class="label"><?php esc_html_e( 'Print', 'ald-blog' ); ?></span>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Featured Image -->
+            <?php if ( has_post_thumbnail() ) : ?>
+                <div class="single-image">
+                    <?php the_post_thumbnail( 'large' ); ?>
+                </div>
+            <?php endif; ?>
+
+            <!-- Article Content -->
+            <div class="single-content" id="singleContent">
+                <?php the_content(); ?>
+            </div>
+
+            <!-- Tags -->
+            <?php
+            $tags = get_the_tags();
+            if ( $tags ) :
+                ?>
+                <div class="single-tags">
+                    <?php foreach ( $tags as $tag ) : ?>
+                        <a href="<?php echo esc_url( get_tag_link( $tag->term_id ) ); ?>" class="tag"><?php echo esc_html( $tag->name ); ?></a>
+                    <?php endforeach; ?>
+                </div>
+            <?php endif; ?>
+
+            <!-- Comments -->
+            <div class="single-comments">
+                <?php
+                if ( comments_open() || get_comments_number() ) :
+                    comments_template();
+                endif;
+                ?>
+            </div>
 
         </article>
 
-    <?php endwhile; ?>
+        <?php endwhile; ?>
 
-</div><!-- .container -->
+    </div>
+</main>
 
 <?php
 get_footer();

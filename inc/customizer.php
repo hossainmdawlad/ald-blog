@@ -1,141 +1,164 @@
 <?php
 /**
- * ALD Blog Customizer
+ * ALD Blog Customizer — Prothom Alo Theme Options
  *
  * @package ALD_Blog
  */
 
-function ald_blog_customizer_settings( $wp_customize ) {
+function ald_blog_customize_register( $wp_customize ) {
 
-    // === General Settings Panel ===
-    $wp_customize->add_section( 'ald_blog_general', array(
-        'title'    => __( 'ALD Blog Settings', 'ald-blog' ),
+    // === COLORS SECTION ===
+    $wp_customize->add_section( 'ald_blog_colors', array(
+        'title'    => __( 'Theme Colors', 'ald-blog' ),
         'priority' => 30,
     ) );
 
-    // Show/Hide Reading Time
-    $wp_customize->add_setting( 'ald_blog_show_reading_time', array(
-        'default'           => true,
-        'sanitize_callback' => 'wp_validate_boolean',
-        'transport'         => 'refresh',
-    ) );
+    $colors = array(
+        'primary_color'   => array( 'label' => __( 'Primary Color (Red)', 'ald-blog' ),   'default' => '#D60000' ),
+        'primary_dark'    => array( 'label' => __( 'Dark Primary', 'ald-blog' ),          'default' => '#a30000' ),
+        'primary_light'   => array( 'label' => __( 'Light Primary', 'ald-blog' ),         'default' => '#ff1a1a' ),
+        'bg_color'        => array( 'label' => __( 'Background Color', 'ald-blog' ),       'default' => '#ffffff' ),
+        'text_color'      => array( 'label' => __( 'Text Color', 'ald-blog' ),             'default' => '#1a1a1a' ),
+        'text_secondary'  => array( 'label' => __( 'Secondary Text', 'ald-blog' ),         'default' => '#525252' ),
+        'text_muted'      => array( 'label' => __( 'Muted Text', 'ald-blog' ),             'default' => '#737373' ),
+        'border_color'    => array( 'label' => __( 'Border Color', 'ald-blog' ),           'default' => '#e5e5e5' ),
+        'bg_alt'          => array( 'label' => __( 'Alt Background', 'ald-blog' ),         'default' => '#f5f5f5' ),
+        'footer_bg'       => array( 'label' => __( 'Footer Background', 'ald-blog' ),      'default' => '#171717' ),
+        'footer_text'     => array( 'label' => __( 'Footer Text', 'ald-blog' ),            'default' => '#a3a3a3' ),
+    );
 
-    $wp_customize->add_control( 'ald_blog_show_reading_time', array(
-        'label'   => __( 'Show Reading Time', 'ald-blog' ),
-        'section' => 'ald_blog_general',
-        'type'    => 'checkbox',
-    ) );
+    foreach ( $colors as $id => $args ) {
+        $wp_customize->add_setting( $id, array(
+            'default'           => $args['default'],
+            'sanitize_callback' => 'sanitize_hex_color',
+            'transport'         => 'postMessage',
+        ) );
+        $wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, $id, array(
+            'label'   => $args['label'],
+            'section' => 'ald_blog_colors',
+        ) ) );
+    }
 
-    // Show/Hide Breadcrumbs
-    $wp_customize->add_setting( 'ald_blog_show_breadcrumbs', array(
-        'default'           => true,
-        'sanitize_callback' => 'wp_validate_boolean',
-        'transport'         => 'refresh',
-    ) );
-
-    $wp_customize->add_control( 'ald_blog_show_breadcrumbs', array(
-        'label'   => __( 'Show Breadcrumbs', 'ald-blog' ),
-        'section' => 'ald_blog_general',
-        'type'    => 'checkbox',
-    ) );
-
-    // Excerpt length
-    $wp_customize->add_setting( 'ald_blog_excerpt_length', array(
-        'default'           => 25,
-        'sanitize_callback' => 'absint',
-        'transport'         => 'refresh',
-    ) );
-
-    $wp_customize->add_control( 'ald_blog_excerpt_length', array(
-        'label'       => __( 'Excerpt Length (words)', 'ald-blog' ),
-        'section'     => 'ald_blog_general',
-        'type'        => 'number',
-        'input_attrs' => array(
-            'min'  => 10,
-            'max'  => 100,
-            'step' => 1,
-        ),
-    ) );
-
-    // === AdSense Section ===
-    $wp_customize->add_section( 'ald_blog_ads', array(
-        'title'    => __( 'Ad Settings', 'ald-blog' ),
-        'priority' => 35,
-    ) );
-
-    // AdSense Publisher ID
-    $wp_customize->add_setting( 'ald_blog_adsense_id', array(
-        'default'           => '',
-        'sanitize_callback' => 'sanitize_text_field',
-        'transport'         => 'refresh',
-    ) );
-
-    $wp_customize->add_control( 'ald_blog_adsense_id', array(
-        'label'       => __( 'AdSense Publisher ID', 'ald-blog' ),
-        'description' => __( 'Enter your AdSense publisher ID (e.g., ca-pub-XXXXXXXXXXXXXXXX)', 'ald-blog' ),
-        'section'     => 'ald_blog_ads',
-        'type'        => 'text',
-    ) );
-
-    // Enable header ad
-    $wp_customize->add_setting( 'ald_blog_ad_header', array(
-        'default'           => false,
-        'sanitize_callback' => 'wp_validate_boolean',
-        'transport'         => 'refresh',
-    ) );
-
-    $wp_customize->add_control( 'ald_blog_ad_header', array(
-        'label'   => __( 'Enable Header Ad', 'ald-blog' ),
-        'section' => 'ald_blog_ads',
-        'type'    => 'checkbox',
-    ) );
-
-    // Enable content ad
-    $wp_customize->add_setting( 'ald_blog_ad_content', array(
-        'default'           => false,
-        'sanitize_callback' => 'wp_validate_boolean',
-        'transport'         => 'refresh',
-    ) );
-
-    $wp_customize->add_control( 'ald_blog_ad_content', array(
-        'label'   => __( 'Enable In-Content Ad', 'ald-blog' ),
-        'section' => 'ald_blog_ads',
-        'type'    => 'checkbox',
-    ) );
-
-    // Enable sidebar ad
-    $wp_customize->add_setting( 'ald_blog_ad_sidebar', array(
-        'default'           => false,
-        'sanitize_callback' => 'wp_validate_boolean',
-        'transport'         => 'refresh',
-    ) );
-
-    $wp_customize->add_control( 'ald_blog_ad_sidebar', array(
-        'label'   => __( 'Enable Sidebar Ad', 'ald-blog' ),
-        'section' => 'ald_blog_ads',
-        'type'    => 'checkbox',
-    ) );
-
-    // === Footer Section ===
-    $wp_customize->add_section( 'ald_blog_footer', array(
-        'title'    => __( 'Footer Settings', 'ald-blog' ),
+    // === HOMEPAGE SECTION ===
+    $wp_customize->add_section( 'ald_blog_homepage', array(
+        'title'    => __( 'Homepage Blocks', 'ald-blog' ),
         'priority' => 40,
     ) );
 
-    // Footer text
-    $wp_customize->add_setting( 'ald_blog_footer_text', array(
-        'default'           => '',
-        'sanitize_callback' => 'wp_kses_post',
+    // Show/Hide blocks
+    $blocks = array(
+        'show_hero'    => array( 'label' => __( 'Show Lead Article', 'ald-blog' ),   'default' => true ),
+        'show_politics' => array( 'label' => __( 'Show Politics Section', 'ald-blog' ), 'default' => true ),
+        'show_latest'   => array( 'label' => __( 'Show Latest Posts', 'ald-blog' ),   'default' => true ),
+        'show_economy'  => array( 'label' => __( 'Show Economy Section', 'ald-blog' ), 'default' => true ),
+    );
+    foreach ( $blocks as $id => $args ) {
+        $wp_customize->add_setting( $id, array(
+            'default'           => $args['default'],
+            'sanitize_callback' => 'wp_validate_boolean',
+            'transport'         => 'refresh',
+        ) );
+        $wp_customize->add_control( $id, array(
+            'label'   => $args['label'],
+            'section' => 'ald_blog_homepage',
+            'type'    => 'checkbox',
+        ) );
+    }
+
+    // Category selectors
+    $categories = get_categories( array( 'hide_empty' => false ) );
+    $cat_choices = array( '' => __( '— Select Category —', 'ald-blog' ) );
+    foreach ( $categories as $cat ) {
+        $cat_choices[ $cat->slug ] = $cat->name;
+    }
+
+    $wp_customize->add_setting( 'politics_category', array(
+        'default'           => 'opinion',
+        'sanitize_callback' => 'sanitize_text_field',
         'transport'         => 'refresh',
     ) );
-
-    $wp_customize->add_control( 'ald_blog_footer_text', array(
-        'label'   => __( 'Footer Text', 'ald-blog' ),
-        'section' => 'ald_blog_footer',
-        'type'    => 'textarea',
+    $wp_customize->add_control( 'politics_category', array(
+        'label'    => __( 'Politics Section Category', 'ald-blog' ),
+        'section'  => 'ald_blog_homepage',
+        'type'     => 'select',
+        'choices'  => $cat_choices,
     ) );
 
-    // === Colors ===
-    $wp_customize->get_setting( 'header_textcolor' )->transport = 'postMessage';
+    $wp_customize->add_setting( 'economy_category', array(
+        'default'           => 'business',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ) );
+    $wp_customize->add_control( 'economy_category', array(
+        'label'    => __( 'Economy Section Category', 'ald-blog' ),
+        'section'  => 'ald_blog_homepage',
+        'type'     => 'select',
+        'choices'  => $cat_choices,
+    ) );
+
+    $wp_customize->add_setting( 'latest_posts_count', array(
+        'default'           => 6,
+        'sanitize_callback' => 'absint',
+        'transport'         => 'refresh',
+    ) );
+    $wp_customize->add_control( 'latest_posts_count', array(
+        'label'   => __( 'Number of Latest Posts', 'ald-blog' ),
+        'section' => 'ald_blog_homepage',
+        'type'    => 'number',
+        'input_attrs' => array( 'min' => 1, 'max' => 12 ),
+    ) );
+
+    // === TICKER SECTION ===
+    $wp_customize->add_section( 'ald_blog_ticker', array(
+        'title'    => __( 'Breaking News Ticker', 'ald-blog' ),
+        'priority' => 45,
+    ) );
+
+    $wp_customize->add_setting( 'ticker_count', array(
+        'default'           => 5,
+        'sanitize_callback' => 'absint',
+        'transport'         => 'refresh',
+    ) );
+    $wp_customize->add_control( 'ticker_count', array(
+        'label'       => __( 'Number of posts in ticker', 'ald-blog' ),
+        'section'     => 'ald_blog_ticker',
+        'type'        => 'number',
+        'input_attrs' => array( 'min' => 1, 'max' => 10 ),
+    ) );
 }
-add_action( 'customize_register', 'ald_blog_customizer_settings' );
+add_action( 'customize_register', 'ald_blog_customize_register' );
+
+/**
+ * Customizer CSS Output
+ */
+function ald_blog_customizer_css() {
+    $primary    = get_theme_mod( 'primary_color', '#D60000' );
+    $primary_dk = get_theme_mod( 'primary_dark', '#a30000' );
+    $primary_lt = get_theme_mod( 'primary_light', '#ff1a1a' );
+    $bg         = get_theme_mod( 'bg_color', '#ffffff' );
+    $text       = get_theme_mod( 'text_color', '#1a1a1a' );
+    $text_sec   = get_theme_mod( 'text_secondary', '#525252' );
+    $text_muted = get_theme_mod( 'text_muted', '#737373' );
+    $border     = get_theme_mod( 'border_color', '#e5e5e5' );
+    $bg_alt     = get_theme_mod( 'bg_alt', '#f5f5f5' );
+    $footer_bg  = get_theme_mod( 'footer_bg', '#171717' );
+    $footer_txt = get_theme_mod( 'footer_text', '#a3a3a3' );
+    ?>
+    <style>
+        :root {
+            --color-primary: <?php echo esc_attr( $primary ); ?>;
+            --color-primary-dark: <?php echo esc_attr( $primary_dk ); ?>;
+            --color-primary-light: <?php echo esc_attr( $primary_lt ); ?>;
+            --color-bg: <?php echo esc_attr( $bg ); ?>;
+            --color-text: <?php echo esc_attr( $text ); ?>;
+            --color-text-secondary: <?php echo esc_attr( $text_sec ); ?>;
+            --color-text-muted: <?php echo esc_attr( $text_muted ); ?>;
+            --color-border: <?php echo esc_attr( $border ); ?>;
+            --color-bg-alt: <?php echo esc_attr( $bg_alt ); ?>;
+            --color-footer-bg: <?php echo esc_attr( $footer_bg ); ?>;
+            --color-footer-text: <?php echo esc_attr( $footer_txt ); ?>;
+        }
+    </style>
+    <?php
+}
+add_action( 'wp_head', 'ald_blog_customizer_css', 5 );

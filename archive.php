@@ -1,6 +1,6 @@
 <?php
 /**
- * The archive template (category, tag, date, author)
+ * Archive / Category template
  *
  * @package ALD_Blog
  */
@@ -8,45 +8,41 @@
 get_header();
 ?>
 
-<div class="container">
-    <div class="content-sidebar-wrap">
+<main class="site-content" role="main">
+    <div class="container">
 
-        <div class="content-area" id="primary-content">
-
-            <?php ald_blog_breadcrumbs(); ?>
-
-            <header class="archive-header">
-                <?php
-                the_archive_title( '<h1 class="archive-title">', '</h1>' );
-                the_archive_description( '<div class="archive-description">', '</div>' );
+        <header class="archive-header">
+            <h1 class="archive-title"><?php single_cat_title(); ?></h1>
+            <?php
+            $desc = category_description();
+            if ( $desc ) :
                 ?>
-            </header>
+                <div class="archive-description"><?php echo $desc; ?></div>
+            <?php endif; ?>
+        </header>
 
-            <?php if ( have_posts() ) : ?>
-
-                <?php ald_blog_ad_container( 'header', 'ad-container--below-title' ); ?>
-
+        <?php if ( have_posts() ) : ?>
+            <div class="posts-grid">
                 <?php
-                while ( have_posts() ) :
-                    the_post();
-                    get_template_part( 'template-parts/content', get_post_type() );
+                while ( have_posts() ) : the_post();
+                    get_template_part( 'template-parts/content', 'grid' );
                 endwhile;
                 ?>
+            </div>
+            <div class="pagination">
+                <?php
+                echo paginate_links( array(
+                    'prev_text' => '← ' . esc_html__( 'Previous', 'ald-blog' ),
+                    'next_text' => esc_html__( 'Next', 'ald-blog' ) . ' →',
+                ) );
+                ?>
+            </div>
+        <?php else : ?>
+            <p class="no-results"><?php esc_html_e( 'No articles found', 'ald-blog' ); ?></p>
+        <?php endif; ?>
 
-                <?php ald_blog_pagination(); ?>
-
-            <?php else : ?>
-
-                <?php get_template_part( 'template-parts/content', 'none' ); ?>
-
-            <?php endif; ?>
-
-        </div><!-- .content-area -->
-
-        <?php get_sidebar(); ?>
-
-    </div><!-- .content-sidebar-wrap -->
-</div><!-- .container -->
+    </div>
+</main>
 
 <?php
 get_footer();
