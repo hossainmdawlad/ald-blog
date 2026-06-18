@@ -158,7 +158,7 @@ function ald_blog_widgets_init() {
             'id'            => 'footer-' . $i,
             'before_widget' => '<div id="%1$s" class="widget %2$s">',
             'after_widget'  => '</div>',
-            'before_title'  => '<h3 class="widget-title">',
+            'before_title'  => '<h3 class="footer-heading">',
             'after_title'   => '</h3>',
         ) );
     }
@@ -287,6 +287,11 @@ function ald_blog_fallback_menu() {
     }
     echo '</ul>';
 }
+
+/**
+ * Custom Widgets
+ */
+require ALD_BLOG_DIR . '/inc/widgets.php';
 
 /**
  * Customizer

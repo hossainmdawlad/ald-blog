@@ -10,6 +10,7 @@ get_header();
 // Get category settings from Customizer
 $politics_cat    = get_theme_mod( 'politics_category', 'opinion' );
 $economy_cat     = get_theme_mod( 'economy_category', 'business' );
+$latest_cat      = get_theme_mod( 'latest_category', '' );
 $latest_count    = absint( get_theme_mod( 'latest_posts_count', 6 ) );
 $show_politics   = get_theme_mod( 'show_politics', true );
 $show_economy    = get_theme_mod( 'show_economy', true );
@@ -116,7 +117,7 @@ $show_latest     = get_theme_mod( 'show_latest', true );
                 </div>
 
                 <?php
-                // === POLITICS SECTION ===
+                // === 3-COLUMN POST SECTION ===
                 if ( $show_politics && $politics_cat ) :
                     $politics_query = new WP_Query( array(
                         'category_name'  => $politics_cat,
@@ -128,10 +129,10 @@ $show_latest     = get_theme_mod( 'show_latest', true );
                         <section class="section-block">
                             <div class="section-header">
                                 <div class="section-accent"></div>
-                                <h2 class="section-title"><?php echo esc_html( get_category_by_slug( $politics_cat ) ? get_category_by_slug( $politics_cat )->name : 'Politics' ); ?></h2>
+                                <h2 class="section-title"><?php echo esc_html( get_category_by_slug( $politics_cat ) ? get_category_by_slug( $politics_cat )->name : 'News' ); ?></h2>
                                 <a href="<?php echo esc_url( get_category_link( get_category_by_slug( $politics_cat ) ) ); ?>" class="section-more"><?php esc_html_e( 'View All →', 'ald-blog' ); ?></a>
                             </div>
-                            <div class="politics-grid">
+                            <div class="three-col-grid">
                                 <?php
                                 while ( $politics_query->have_posts() ) : $politics_query->the_post();
                                     ?>
@@ -157,21 +158,36 @@ $show_latest     = get_theme_mod( 'show_latest', true );
                 ?>
 
                 <?php
-                // === LATEST POSTS GRID ===
+                // === 2-COLUMN POST SECTION ===
                 if ( $show_latest ) :
                     ?>
                     <section class="section-block">
                         <div class="section-header">
                             <div class="section-accent"></div>
-                            <h2 class="section-title"><?php esc_html_e( 'Latest Articles', 'ald-blog' ); ?></h2>
+                            <h2 class="section-title">
+                                <?php
+                                if ( $latest_cat && get_category_by_slug( $latest_cat ) ) {
+                                    echo esc_html( get_category_by_slug( $latest_cat )->name );
+                                } else {
+                                    esc_html_e( 'Latest Articles', 'ald-blog' );
+                                }
+                                ?>
+                            </h2>
+                            <?php if ( $latest_cat ) : ?>
+                                <a href="<?php echo esc_url( get_category_link( get_category_by_slug( $latest_cat ) ) ); ?>" class="section-more"><?php esc_html_e( 'View All →', 'ald-blog' ); ?></a>
+                            <?php endif; ?>
                         </div>
-                        <div class="posts-grid" id="postsGrid">
+                        <div class="two-col-grid" id="postsGrid">
                             <?php
-                            $latest_query = new WP_Query( array(
+                            $latest_args = array(
                                 'posts_per_page' => $latest_count,
                                 'offset'         => 3,
                                 'post_status'    => 'publish',
-                            ) );
+                            );
+                            if ( $latest_cat ) {
+                                $latest_args['category_name'] = $latest_cat;
+                            }
+                            $latest_query = new WP_Query( $latest_args );
 
                             if ( $latest_query->have_posts() ) :
                                 while ( $latest_query->have_posts() ) : $latest_query->the_post();
@@ -179,15 +195,6 @@ $show_latest     = get_theme_mod( 'show_latest', true );
                                 endwhile;
                                 wp_reset_postdata();
                             endif;
-                            ?>
-                        </div>
-
-                        <div class="pagination">
-                            <?php
-                            echo paginate_links( array(
-                                'prev_text' => '← ' . esc_html__( 'Previous', 'ald-blog' ),
-                                'next_text' => esc_html__( 'Next', 'ald-blog' ) . ' →',
-                            ) );
                             ?>
                         </div>
                     </section>
@@ -203,7 +210,7 @@ $show_latest     = get_theme_mod( 'show_latest', true );
         </div>
 
         <?php
-        // === ECONOMY SECTION (full width) ===
+        // === 4-COLUMN POST SECTION (full width) ===
         if ( $show_economy && $economy_cat ) :
             $economy_query = new WP_Query( array(
                 'category_name'  => $economy_cat,
@@ -215,11 +222,11 @@ $show_latest     = get_theme_mod( 'show_latest', true );
                 <section class="section-block economy-section">
                     <div class="section-header">
                         <div class="section-accent"></div>
-                        <h2 class="section-title"><?php echo esc_html( get_category_by_slug( $economy_cat ) ? get_category_by_slug( $economy_cat )->name : 'Economy' ); ?></h2>
+                        <h2 class="section-title"><?php echo esc_html( get_category_by_slug( $economy_cat ) ? get_category_by_slug( $economy_cat )->name : 'News' ); ?></h2>
                         <div class="section-line"></div>
                         <a href="<?php echo esc_url( get_category_link( get_category_by_slug( $economy_cat ) ) ); ?>" class="section-more"><?php esc_html_e( 'View All →', 'ald-blog' ); ?></a>
                     </div>
-                    <div class="economy-grid">
+                    <div class="four-col-grid">
                         <?php
                         while ( $economy_query->have_posts() ) : $economy_query->the_post();
                             ?>

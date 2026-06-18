@@ -8,60 +8,79 @@
 get_header();
 ?>
 
-<div class="container">
-    <div class="content-sidebar-wrap">
+<main class="site-content" role="main">
+    <div class="container">
 
-        <div class="content-area" id="primary-content">
+        <!-- Row 1: Title + Sidebar side by side -->
+        <div class="content-grid">
 
-            <header class="archive-header">
-                <h1 class="archive-title">
-                    <?php
-                    printf(
-                        esc_html__( 'Search Results for: %s', 'ald-blog' ),
-                        '<span>' . get_search_query() . '</span>'
-                    );
-                    ?>
-                </h1>
-            </header>
+            <div class="main-column">
 
-            <?php if ( have_posts() ) : ?>
-
-                <p class="results-count">
+                <!-- Search Title -->
+                <header class="archive-header">
+                    <h1 class="archive-title">
+                        <?php
+                        printf(
+                            esc_html__( 'Search Results for: %s', 'ald-blog' ),
+                            '<span>' . get_search_query() . '</span>'
+                        );
+                        ?>
+                    </h1>
                     <?php
                     global $wp_query;
-                    printf(
-                        esc_html( _n(
-                            '%d result found',
-                            '%d results found',
-                            $wp_query->found_posts,
-                            'ald-blog'
-                        ) ),
-                        $wp_query->found_posts
-                    );
+                    if ( have_posts() ) :
+                        printf(
+                            '<p class="results-count">%s</p>',
+                            sprintf(
+                                _n(
+                                    '%d result found',
+                                    '%d results found',
+                                    $wp_query->found_posts,
+                                    'ald-blog'
+                                ),
+                                $wp_query->found_posts
+                            )
+                        );
+                    endif;
                     ?>
-                </p>
+                </header>
 
-                <?php
-                while ( have_posts() ) :
-                    the_post();
-                    get_template_part( 'template-parts/content', 'search' );
-                endwhile;
-                ?>
+                <?php if ( have_posts() ) : ?>
 
-                <?php ald_blog_pagination(); ?>
+                    <!-- 2-Column Post Grid -->
+                    <div class="two-col-grid">
+                        <?php
+                        while ( have_posts() ) : the_post();
+                            get_template_part( 'template-parts/content', 'grid' );
+                        endwhile;
+                        ?>
+                    </div>
 
-            <?php else : ?>
+                    <!-- Pagination -->
+                    <div class="pagination">
+                        <?php
+                        echo paginate_links( array(
+                            'prev_text' => '← ' . esc_html__( 'Previous', 'ald-blog' ),
+                            'next_text' => esc_html__( 'Next', 'ald-blog' ) . ' →',
+                        ) );
+                        ?>
+                    </div>
 
-                <?php get_template_part( 'template-parts/content', 'none' ); ?>
+                <?php else : ?>
+                    <p class="no-results"><?php esc_html_e( 'No articles found', 'ald-blog' ); ?></p>
+                <?php endif; ?>
 
-            <?php endif; ?>
+            </div>
 
-        </div><!-- .content-area -->
+            <!-- Sidebar (right) -->
+            <aside class="sidebar-column">
+                <?php get_sidebar(); ?>
+            </aside>
 
-        <?php get_sidebar(); ?>
+        </div>
 
-    </div><!-- .content-sidebar-wrap -->
-</div><!-- .container -->
+    </div>
+</main>
 
 <?php
 get_footer();

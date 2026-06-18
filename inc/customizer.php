@@ -47,10 +47,10 @@ function ald_blog_customize_register( $wp_customize ) {
 
     // Show/Hide blocks
     $blocks = array(
-        'show_hero'    => array( 'label' => __( 'Show Lead Article', 'ald-blog' ),   'default' => true ),
-        'show_politics' => array( 'label' => __( 'Show Politics Section', 'ald-blog' ), 'default' => true ),
-        'show_latest'   => array( 'label' => __( 'Show Latest Posts', 'ald-blog' ),   'default' => true ),
-        'show_economy'  => array( 'label' => __( 'Show Economy Section', 'ald-blog' ), 'default' => true ),
+        'show_hero'     => array( 'label' => __( 'Show Lead Article', 'ald-blog' ),        'default' => true ),
+        'show_politics'  => array( 'label' => __( 'Show 3-Column Post Section', 'ald-blog' ), 'default' => true ),
+        'show_latest'    => array( 'label' => __( 'Show 2-Column Post Section', 'ald-blog' ), 'default' => true ),
+        'show_economy'   => array( 'label' => __( 'Show 4-Column Post Section', 'ald-blog' ), 'default' => true ),
     );
     foreach ( $blocks as $id => $args ) {
         $wp_customize->add_setting( $id, array(
@@ -78,7 +78,7 @@ function ald_blog_customize_register( $wp_customize ) {
         'transport'         => 'refresh',
     ) );
     $wp_customize->add_control( 'politics_category', array(
-        'label'    => __( 'Politics Section Category', 'ald-blog' ),
+        'label'    => __( '3-Column Post Section — Category', 'ald-blog' ),
         'section'  => 'ald_blog_homepage',
         'type'     => 'select',
         'choices'  => $cat_choices,
@@ -90,7 +90,20 @@ function ald_blog_customize_register( $wp_customize ) {
         'transport'         => 'refresh',
     ) );
     $wp_customize->add_control( 'economy_category', array(
-        'label'    => __( 'Economy Section Category', 'ald-blog' ),
+        'label'    => __( '4-Column Post Section — Category', 'ald-blog' ),
+        'section'  => 'ald_blog_homepage',
+        'type'     => 'select',
+        'choices'  => $cat_choices,
+    ) );
+
+    // Latest Posts (2-Column) category selector
+    $wp_customize->add_setting( 'latest_category', array(
+        'default'           => '',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ) );
+    $wp_customize->add_control( 'latest_category', array(
+        'label'    => __( '2-Column Post Section — Category', 'ald-blog' ),
         'section'  => 'ald_blog_homepage',
         'type'     => 'select',
         'choices'  => $cat_choices,
@@ -125,6 +138,82 @@ function ald_blog_customize_register( $wp_customize ) {
         'type'        => 'number',
         'input_attrs' => array( 'min' => 1, 'max' => 10 ),
     ) );
+
+    // Ticker background color
+    $wp_customize->add_setting( 'ticker_bg_color', array(
+        'default'           => '#D60000',
+        'sanitize_callback' => 'sanitize_hex_color',
+        'transport'         => 'postMessage',
+    ) );
+    $wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'ticker_bg_color', array(
+        'label'   => __( 'Ticker Background Color', 'ald-blog' ),
+        'section' => 'ald_blog_ticker',
+    ) ) );
+
+    // Ticker text color
+    $wp_customize->add_setting( 'ticker_text_color', array(
+        'default'           => '#ffffff',
+        'sanitize_callback' => 'sanitize_hex_color',
+        'transport'         => 'postMessage',
+    ) );
+    $wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'ticker_text_color', array(
+        'label'   => __( 'Ticker Text Color', 'ald-blog' ),
+        'section' => 'ald_blog_ticker',
+    ) ) );
+
+    // Ticker link color
+    $wp_customize->add_setting( 'ticker_link_color', array(
+        'default'           => '#ffffff',
+        'sanitize_callback' => 'sanitize_hex_color',
+        'transport'         => 'postMessage',
+    ) );
+    $wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'ticker_link_color', array(
+        'label'   => __( 'Ticker Link Color', 'ald-blog' ),
+        'section' => 'ald_blog_ticker',
+    ) ) );
+
+    // === TOP BAR SECTION ===
+    $wp_customize->add_section( 'ald_blog_topbar', array(
+        'title'    => __( 'Top Bar', 'ald-blog' ),
+        'priority' => 35,
+    ) );
+
+    // Top bar left text
+    $wp_customize->add_setting( 'topbar_left_text', array(
+        'default'           => '',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ) );
+    $wp_customize->add_control( 'topbar_left_text', array(
+        'label'       => __( 'Left Side Text', 'ald-blog' ),
+        'description' => __( 'Text displayed on the left side of the top bar. Leave empty to show date.', 'ald-blog' ),
+        'section'     => 'ald_blog_topbar',
+        'type'        => 'text',
+    ) );
+
+    // Top bar broadcast link text
+    $wp_customize->add_setting( 'topbar_broadcast_text', array(
+        'default'           => __( 'Top Broadcast', 'ald-blog' ),
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ) );
+    $wp_customize->add_control( 'topbar_broadcast_text', array(
+        'label'   => __( 'Broadcast Link Text', 'ald-blog' ),
+        'section' => 'ald_blog_topbar',
+        'type'    => 'text',
+    ) );
+
+    // Top bar broadcast link URL
+    $wp_customize->add_setting( 'topbar_broadcast_url', array(
+        'default'           => '#',
+        'sanitize_callback' => 'esc_url_raw',
+        'transport'         => 'refresh',
+    ) );
+    $wp_customize->add_control( 'topbar_broadcast_url', array(
+        'label'   => __( 'Broadcast Link URL', 'ald-blog' ),
+        'section' => 'ald_blog_topbar',
+        'type'    => 'url',
+    ) );
 }
 add_action( 'customize_register', 'ald_blog_customize_register' );
 
@@ -143,6 +232,9 @@ function ald_blog_customizer_css() {
     $bg_alt     = get_theme_mod( 'bg_alt', '#f5f5f5' );
     $footer_bg  = get_theme_mod( 'footer_bg', '#171717' );
     $footer_txt = get_theme_mod( 'footer_text', '#a3a3a3' );
+    $ticker_bg  = get_theme_mod( 'ticker_bg_color', '#D60000' );
+    $ticker_txt = get_theme_mod( 'ticker_text_color', '#ffffff' );
+    $ticker_link = get_theme_mod( 'ticker_link_color', '#ffffff' );
     ?>
     <style>
         :root {
@@ -157,6 +249,9 @@ function ald_blog_customizer_css() {
             --color-bg-alt: <?php echo esc_attr( $bg_alt ); ?>;
             --color-footer-bg: <?php echo esc_attr( $footer_bg ); ?>;
             --color-footer-text: <?php echo esc_attr( $footer_txt ); ?>;
+            --color-ticker-bg: <?php echo esc_attr( $ticker_bg ); ?>;
+            --color-ticker-text: <?php echo esc_attr( $ticker_txt ); ?>;
+            --color-ticker-link: <?php echo esc_attr( $ticker_link ); ?>;
         }
     </style>
     <?php

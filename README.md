@@ -338,33 +338,35 @@ To enable AdRotate:
 
 ```
 ald-blog/
-├── style.css                     # Theme header + critical CSS (19 KB)
-├── functions.php                 # Theme setup, enqueuing, schema, ads (31 KB)
+├── style.css                     # Theme header + critical CSS
+├── functions.php                 # Theme setup, enqueuing, schema, ads
 ├── header.php                    # HTML head + site header + navigation
 ├── footer.php                    # Site footer + footer widgets + WP footer
 ├── index.php                     # Main blog listing template
-├── single.php                    # Single post template
+├── single.php                    # Single post template with sidebar
 ├── page.php                      # Static page template
-├── archive.php                   # Category/tag/date/author archives
-├── search.php                    # Search results template
+├── archive.php                   # Category/tag/date/author archives with sidebar
+├── search.php                    # Search results template with sidebar
 ├── 404.php                       # 404 error page
-├── sidebar.php                   # Sidebar with widgets + ad containers
+├── sidebar.php                   # Sidebar with dynamic widgets + fallback widgets
 ├── screenshot.png                # Theme screenshot (1200×900)
 │
 ├── assets/
 │   ├── css/
-│   │   ├── main.css              # Non-critical CSS (deferred) (8.2 KB)
-│   │   └── editor.css            # Block editor styles (1.7 KB)
+│   │   ├── main.css              # Non-critical CSS (deferred)
+│   │   └── editor.css            # Block editor styles
 │   └── js/
-│       └── main.js               # Vanilla JS — mobile nav, lazy load,
-│                                   # back-to-top, reading progress (11 KB)
+│       └── main.js               # Vanilla JS — mobile nav, live search,
+│                                   # category filter, bookmark, font size
 │
 ├── inc/
-│   ├── customizer.php            # Customizer settings (ads, layout, footer)
+│   ├── customizer.php            # Customizer settings (colors, homepage, ticker, top bar)
+│   ├── widgets.php               # Custom widgets (Latest News, Weather, Multimedia, Ad Banner)
 │   └── fallback-menu.php         # Fallback menu when no menu is assigned
 │
 └── template-parts/
     ├── content.php               # Post card for archive/index listings
+    ├── content-grid.php          # Grid card for homepage sections
     ├── content-search.php        # Search result item
     └── content-none.php          # "No results found" message
 ```
@@ -472,13 +474,61 @@ ALD Blog declares support for:
 
 ## Customization
 
-### Adding Custom CSS
+### Customizer Settings
 
-**Do NOT edit `style.css` directly** — it will be overwritten on theme updates.
+Navigate to **Appearance → Customize**:
 
-Instead, use:
-1. **Appearance → Customize → Additional CSS** (recommended for small changes)
-2. **Child theme** (recommended for extensive customization)
+#### Theme Colors
+| Setting | Default | Description |
+|---|---|---|
+| Primary Color | `#D60000` | Main accent color |
+| Background Color | `#ffffff` | Page background |
+| Text Color | `#1a1a1a` | Body text |
+| Secondary Text | `#525252` | Secondary text |
+| Muted Text | `#737373` | Muted/caption text |
+| Border Color | `#e5e5e5` | Borders and dividers |
+| Footer Background | `#171717` | Footer dark background |
+| Footer Text | `#a3a3a3` | Footer text color |
+
+#### Homepage Blocks
+| Setting | Default | Description |
+|---|---|---|
+| Show Lead Article | ✅ On | Top story section |
+| Show 3-Column Post Section | ✅ On | First category section |
+| Show 2-Column Post Section | ✅ On | Second category section |
+| Show 4-Column Post Section | ✅ On | Third category section |
+| 3-Column Category | `opinion` | Category for 3-col section |
+| 4-Column Category | `business` | Category for 4-col section |
+| 2-Column Category | (all) | Category for 2-col section |
+| Number of Latest Posts | 6 | Posts in 2-col section |
+
+#### Breaking News Ticker
+| Setting | Default | Description |
+|---|---|---|
+| Number of Posts | 5 | Posts in ticker |
+| Background Color | `#D60000` | Ticker background |
+| Text Color | `#ffffff` | Ticker text |
+| Link Color | `#ffffff` | Ticker link color |
+
+#### Top Bar
+| Setting | Default | Description |
+|---|---|---|
+| Left Side Text | (empty) | Custom text (empty = show date) |
+| Broadcast Link Text | `Top Broadcast` | Broadcast link label |
+| Broadcast Link URL | `#` | Broadcast link destination |
+
+### Custom Widgets
+
+ALD Blog includes 4 custom widgets available in **Appearance → Widgets**:
+
+| Widget | Description |
+|---|---|
+| **ALD Latest News** | Posts feed with configurable count and title |
+| **ALD Weather** | Weather display (city, temp, condition, humidity, wind) |
+| **ALD Multimedia Promo** | Video/multimedia promo with title and link |
+| **ALD Ad Banner** | Ad banner with custom title, HTML content, and background color |
+
+The sidebar shows these 4 widgets as fallback when no widgets are assigned. Once you add widgets to the Sidebar area, the fallback is replaced.
 
 ### Creating a Child Theme
 

@@ -24,8 +24,13 @@
             <div class="top-bar-inner">
                 <div class="top-bar-date">
                     <?php
-                    $date = ald_blog_bengali_date();
-                    echo esc_html( $date['gregorian'] );
+                    $topbar_left = get_theme_mod( 'topbar_left_text', '' );
+                    if ( $topbar_left ) {
+                        echo esc_html( $topbar_left );
+                    } else {
+                        $date = ald_blog_bengali_date();
+                        echo esc_html( $date['gregorian'] );
+                    }
                     ?>
                 </div>
                 <div class="top-bar-actions">
@@ -33,9 +38,13 @@
                         <span class="bookmark-icon">🔖</span>
                         <?php esc_html_e( 'Bookmarks:', 'ald-blog' ); ?> <strong>0</strong>
                     </span>
-                    <a href="#" class="broadcast-link">
+                    <?php
+                    $broadcast_text = get_theme_mod( 'topbar_broadcast_text', __( 'Top Broadcast', 'ald-blog' ) );
+                    $broadcast_url  = get_theme_mod( 'topbar_broadcast_url', '#' );
+                    ?>
+                    <a href="<?php echo esc_url( $broadcast_url ); ?>" class="broadcast-link">
                         <span class="live-dot"></span>
-                        <?php esc_html_e( 'Top Broadcast', 'ald-blog' ); ?>
+                        <?php echo esc_html( $broadcast_text ); ?>
                     </a>
                 </div>
             </div>

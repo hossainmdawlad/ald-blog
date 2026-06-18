@@ -51,17 +51,24 @@
                         if (xhr.status === 200) {
                             var data = JSON.parse(xhr.responseText);
                             if (data.length > 0) {
-                                var html = '<ul>';
+                                var html = '<ul class="search-results-list">';
                                 data.forEach(function(item) {
-                                    html += '<li><a href="' + item.url + '">' +
-                                        (item.img ? '<img src="' + item.img + '" alt="">' : '') +
-                                        '<span>' + item.title + '</span></a></li>';
+                                    html += '<li class="search-result-item">';
+                                    html += '<a href="' + item.url + '" class="search-result-link">';
+                                    if (item.img) {
+                                        html += '<span class="search-result-thumb"><img src="' + item.img + '" alt=""></span>';
+                                    }
+                                    html += '<span class="search-result-info">';
+                                    html += '<span class="search-result-title">' + item.title + '</span>';
+                                    html += '</span>';
+                                    html += '</a></li>';
                                 });
                                 html += '</ul>';
+                                html += '<a href="' + aldBlog.themeUrl + '/?s=' + encodeURIComponent(query) + '" class="search-results-view-all">' + 'View All Results →' + '</a>';
                                 searchResults.innerHTML = html;
                                 searchResults.style.display = 'block';
                             } else {
-                                searchResults.innerHTML = '<p class="no-results">No results found</p>';
+                                searchResults.innerHTML = '<div class="search-results-empty"><p>No results found for "<strong>' + query + '</strong>"</p></div>';
                                 searchResults.style.display = 'block';
                             }
                         }
