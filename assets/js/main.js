@@ -64,7 +64,7 @@
                                     html += '</a></li>';
                                 });
                                 html += '</ul>';
-                                html += '<a href="' + aldBlog.themeUrl + '/?s=' + encodeURIComponent(query) + '" class="search-results-view-all">' + 'View All Results →' + '</a>';
+                                html += '<a href="' + aldBlog.homeUrl + '?s=' + encodeURIComponent(query) + '" class="search-results-view-all">' + 'View All Results →' + '</a>';
                                 searchResults.innerHTML = html;
                                 searchResults.style.display = 'block';
                             } else {

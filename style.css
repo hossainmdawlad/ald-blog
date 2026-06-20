@@ -659,11 +659,11 @@ p {
 }
 
 .footer-nav .nav-menu a {
-    color: #a0aec0;
+    color: var(--color-footer-nav-link);
 }
 
 .footer-nav .nav-menu a:hover {
-    color: #e2e8f0;
+    color: var(--color-footer-nav-link-hover);
 }
 
 /* --- Search Form --- */
@@ -1475,8 +1475,7 @@ p {
 
     .btn-add-news,
     .btn-dark-mode,
-    .btn-search,
-    .btn-bell {
+    .btn-search {
         width: 32px;
         height: 32px;
     }
@@ -1561,15 +1560,39 @@ body.dark {
     gap: 16px;
 }
 
-.bookmark-count {
+.top-bar-social {
     display: flex;
     align-items: center;
-    gap: 4px;
+    gap: 10px;
 }
 
-.bookmark-icon {
-    font-size: 14px;
+.top-bar-social .social-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    color: var(--color-text-secondary);
+    background: transparent;
+    transition: color 0.2s, background 0.2s, transform 0.15s;
+    text-decoration: none;
 }
+
+.top-bar-social .social-link:hover {
+    transform: translateY(-1px);
+}
+
+.top-bar-social .social-link svg {
+    width: 14px;
+    height: 14px;
+}
+
+.top-bar-social .social-fb:hover { color: #1877F2; background: rgba(24,119,242,0.1); }
+.top-bar-social .social-tw:hover  { color: #000000; background: rgba(0,0,0,0.06); }
+.top-bar-social .social-ig:hover  { color: #E4405F; background: rgba(228,64,95,0.1); }
+.top-bar-social .social-yt:hover  { color: #FF0000; background: rgba(255,0,0,0.1); }
+.top-bar-social .social-li:hover  { color: #0A66C2; background: rgba(10,102,194,0.1); }
 
 .broadcast-link {
     color: var(--color-primary);
@@ -1650,8 +1673,7 @@ body.dark {
 }
 
 .btn-dark-mode,
-.btn-search,
-.btn-bell {
+.btn-search {
     width: 36px;
     height: 36px;
     display: flex;
@@ -1666,8 +1688,7 @@ body.dark {
 }
 
 .btn-dark-mode:hover,
-.btn-search:hover,
-.btn-bell:hover {
+.btn-search:hover {
     background: var(--color-bg-alt);
 }
 
@@ -1675,16 +1696,6 @@ body.dark {
 body.dark .sun-icon { display: none; }
 body.dark .moon-icon { display: inline; }
 
-.notification-dot {
-    position: absolute;
-    top: 4px;
-    right: 4px;
-    width: 8px;
-    height: 8px;
-    background: #ef4444;
-    border-radius: 50%;
-    animation: pulse 2s infinite;
-}
 
 .btn-login {
     padding: 6px 16px;
@@ -2903,13 +2914,13 @@ body.dark .moon-icon { display: inline; }
 
 .footer-links a {
     font-size: 13px;
-    color: var(--color-footer-text);
+    color: var(--color-footer-link);
     text-decoration: none;
     transition: color 0.2s;
 }
 
 .footer-links a:hover {
-    color: var(--color-primary);
+    color: var(--color-footer-link-hover);
 }
 
 .newsletter-form {
@@ -2965,13 +2976,13 @@ body.dark .moon-icon { display: inline; }
 }
 
 .footer-bottom-links a {
-    color: var(--color-footer-text);
+    color: var(--color-footer-bottom-link);
     text-decoration: none;
     transition: color 0.2s;
 }
 
 .footer-bottom-links a:hover {
-    color: var(--color-primary);
+    color: var(--color-footer-bottom-link-hover);
 }
 
 /* --- Footer Widgets: Enforce Theme Defaults --- */

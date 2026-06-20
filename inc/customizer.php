@@ -214,6 +214,195 @@ function ald_blog_customize_register( $wp_customize ) {
         'section' => 'ald_blog_topbar',
         'type'    => 'url',
     ) );
+
+    // Show/Hide broadcast link
+    $wp_customize->add_setting( 'topbar_broadcast_show', array(
+        'default'           => true,
+        'sanitize_callback' => 'wp_validate_boolean',
+        'transport'         => 'refresh',
+    ) );
+    $wp_customize->add_control( 'topbar_broadcast_show', array(
+        'label'   => __( 'Show Broadcast Link', 'ald-blog' ),
+        'section' => 'ald_blog_topbar',
+        'type'    => 'checkbox',
+    ) );
+
+    // === SOCIAL MEDIA SECTION ===
+    $wp_customize->add_section( 'ald_blog_social', array(
+        'title'    => __( 'Social Media', 'ald-blog' ),
+        'priority' => 37,
+    ) );
+
+    $social_fields = array(
+        'social_facebook_url'  => array( 'label' => __( 'Facebook URL', 'ald-blog' ),  'default' => '' ),
+        'social_twitter_url'   => array( 'label' => __( 'Twitter / X URL', 'ald-blog' ), 'default' => '' ),
+        'social_instagram_url' => array( 'label' => __( 'Instagram URL', 'ald-blog' ), 'default' => '' ),
+        'social_youtube_url'   => array( 'label' => __( 'YouTube URL', 'ald-blog' ),   'default' => '' ),
+        'social_linkedin_url'  => array( 'label' => __( 'LinkedIn URL', 'ald-blog' ),  'default' => '' ),
+    );
+
+    foreach ( $social_fields as $id => $args ) {
+        $wp_customize->add_setting( $id, array(
+            'default'           => $args['default'],
+            'sanitize_callback' => 'esc_url_raw',
+            'transport'         => 'refresh',
+        ) );
+        $wp_customize->add_control( $id, array(
+            'label'   => $args['label'],
+            'section' => 'ald_blog_social',
+            'type'    => 'url',
+        ) );
+    }
+
+    // === HEADER BUTTONS SECTION ===
+    $wp_customize->add_section( 'ald_blog_header_buttons', array(
+        'title'    => __( 'Header Buttons', 'ald-blog' ),
+        'priority' => 36,
+    ) );
+
+    // Add News button text
+    $wp_customize->add_setting( 'header_addnews_text', array(
+        'default'           => __( 'Add News', 'ald-blog' ),
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ) );
+    $wp_customize->add_control( 'header_addnews_text', array(
+        'label'   => __( 'Add News Button Text', 'ald-blog' ),
+        'section' => 'ald_blog_header_buttons',
+        'type'    => 'text',
+    ) );
+
+    // Add News button URL
+    $wp_customize->add_setting( 'header_addnews_url', array(
+        'default'           => '#',
+        'sanitize_callback' => 'esc_url_raw',
+        'transport'         => 'refresh',
+    ) );
+    $wp_customize->add_control( 'header_addnews_url', array(
+        'label'   => __( 'Add News Button URL', 'ald-blog' ),
+        'section' => 'ald_blog_header_buttons',
+        'type'    => 'url',
+    ) );
+
+    // Add News button visibility
+    $wp_customize->add_setting( 'header_addnews_show', array(
+        'default'           => true,
+        'sanitize_callback' => 'wp_validate_boolean',
+        'transport'         => 'refresh',
+    ) );
+    $wp_customize->add_control( 'header_addnews_show', array(
+        'label'   => __( 'Show Add News Button', 'ald-blog' ),
+        'section' => 'ald_blog_header_buttons',
+        'type'    => 'checkbox',
+    ) );
+
+    // Login button text
+    $wp_customize->add_setting( 'header_login_text', array(
+        'default'           => __( 'Login', 'ald-blog' ),
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ) );
+    $wp_customize->add_control( 'header_login_text', array(
+        'label'   => __( 'Login Button Text', 'ald-blog' ),
+        'section' => 'ald_blog_header_buttons',
+        'type'    => 'text',
+    ) );
+
+    // Login button URL
+    $wp_customize->add_setting( 'header_login_url', array(
+        'default'           => '#',
+        'sanitize_callback' => 'esc_url_raw',
+        'transport'         => 'refresh',
+    ) );
+    $wp_customize->add_control( 'header_login_url', array(
+        'label'   => __( 'Login Button URL', 'ald-blog' ),
+        'section' => 'ald_blog_header_buttons',
+        'type'    => 'url',
+    ) );
+
+    // Login button visibility
+    $wp_customize->add_setting( 'header_login_show', array(
+        'default'           => true,
+        'sanitize_callback' => 'wp_validate_boolean',
+        'transport'         => 'refresh',
+    ) );
+    $wp_customize->add_control( 'header_login_show', array(
+        'label'   => __( 'Show Login Button', 'ald-blog' ),
+        'section' => 'ald_blog_header_buttons',
+        'type'    => 'checkbox',
+    ) );
+
+    // === FOOTER SECTION ===
+    $wp_customize->add_section( 'ald_blog_footer', array(
+        'title'    => __( 'Footer', 'ald-blog' ),
+        'priority' => 50,
+    ) );
+
+    // Footer column link color
+    $wp_customize->add_setting( 'footer_link_color', array(
+        'default'           => '#a3a3a3',
+        'sanitize_callback' => 'sanitize_hex_color',
+        'transport'         => 'postMessage',
+    ) );
+    $wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'footer_link_color', array(
+        'label'   => __( 'Footer Column Link Color', 'ald-blog' ),
+        'section' => 'ald_blog_footer',
+    ) ) );
+
+    // Footer column link hover color
+    $wp_customize->add_setting( 'footer_link_hover_color', array(
+        'default'           => '#D60000',
+        'sanitize_callback' => 'sanitize_hex_color',
+        'transport'         => 'postMessage',
+    ) );
+    $wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'footer_link_hover_color', array(
+        'label'   => __( 'Footer Column Link Hover Color', 'ald-blog' ),
+        'section' => 'ald_blog_footer',
+    ) ) );
+
+    // Footer bottom link color
+    $wp_customize->add_setting( 'footer_bottom_link_color', array(
+        'default'           => '#a3a3a3',
+        'sanitize_callback' => 'sanitize_hex_color',
+        'transport'         => 'postMessage',
+    ) );
+    $wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'footer_bottom_link_color', array(
+        'label'   => __( 'Footer Bottom Link Color', 'ald-blog' ),
+        'section' => 'ald_blog_footer',
+    ) ) );
+
+    // Footer bottom link hover color
+    $wp_customize->add_setting( 'footer_bottom_link_hover_color', array(
+        'default'           => '#ffffff',
+        'sanitize_callback' => 'sanitize_hex_color',
+        'transport'         => 'postMessage',
+    ) );
+    $wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'footer_bottom_link_hover_color', array(
+        'label'   => __( 'Footer Bottom Link Hover Color', 'ald-blog' ),
+        'section' => 'ald_blog_footer',
+    ) ) );
+
+    // Footer nav link color (footer-nav .nav-menu a)
+    $wp_customize->add_setting( 'footer_nav_link_color', array(
+        'default'           => '#a0aec0',
+        'sanitize_callback' => 'sanitize_hex_color',
+        'transport'         => 'postMessage',
+    ) );
+    $wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'footer_nav_link_color', array(
+        'label'   => __( 'Footer Nav Link Color', 'ald-blog' ),
+        'section' => 'ald_blog_footer',
+    ) ) );
+
+    // Footer nav link hover color
+    $wp_customize->add_setting( 'footer_nav_link_hover_color', array(
+        'default'           => '#ffffff',
+        'sanitize_callback' => 'sanitize_hex_color',
+        'transport'         => 'postMessage',
+    ) );
+    $wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'footer_nav_link_hover_color', array(
+        'label'   => __( 'Footer Nav Link Hover Color', 'ald-blog' ),
+        'section' => 'ald_blog_footer',
+    ) ) );
 }
 add_action( 'customize_register', 'ald_blog_customize_register' );
 
@@ -235,6 +424,12 @@ function ald_blog_customizer_css() {
     $ticker_bg  = get_theme_mod( 'ticker_bg_color', '#D60000' );
     $ticker_txt = get_theme_mod( 'ticker_text_color', '#ffffff' );
     $ticker_link = get_theme_mod( 'ticker_link_color', '#ffffff' );
+    $footer_link = get_theme_mod( 'footer_link_color', '#a3a3a3' );
+    $footer_link_hover = get_theme_mod( 'footer_link_hover_color', '#D60000' );
+    $footer_bottom_link = get_theme_mod( 'footer_bottom_link_color', '#a3a3a3' );
+    $footer_bottom_link_hover = get_theme_mod( 'footer_bottom_link_hover_color', '#ffffff' );
+    $footer_nav_link = get_theme_mod( 'footer_nav_link_color', '#a0aec0' );
+    $footer_nav_link_hover = get_theme_mod( 'footer_nav_link_hover_color', '#ffffff' );
     ?>
     <style>
         :root {
@@ -252,6 +447,12 @@ function ald_blog_customizer_css() {
             --color-ticker-bg: <?php echo esc_attr( $ticker_bg ); ?>;
             --color-ticker-text: <?php echo esc_attr( $ticker_txt ); ?>;
             --color-ticker-link: <?php echo esc_attr( $ticker_link ); ?>;
+            --color-footer-link: <?php echo esc_attr( $footer_link ); ?>;
+            --color-footer-link-hover: <?php echo esc_attr( $footer_link_hover ); ?>;
+            --color-footer-bottom-link: <?php echo esc_attr( $footer_bottom_link ); ?>;
+            --color-footer-bottom-link-hover: <?php echo esc_attr( $footer_bottom_link_hover ); ?>;
+            --color-footer-nav-link: <?php echo esc_attr( $footer_nav_link ); ?>;
+            --color-footer-nav-link-hover: <?php echo esc_attr( $footer_nav_link_hover ); ?>;
         }
     </style>
     <?php

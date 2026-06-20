@@ -65,6 +65,7 @@ function ald_blog_scripts() {
         'ajaxUrl'  => admin_url( 'admin-ajax.php' ),
         'nonce'    => wp_create_nonce( 'ald_blog_nonce' ),
         'themeUrl' => ALD_BLOG_URI,
+        'homeUrl'  => home_url( '/' ),
     ) );
 
     if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
