@@ -136,7 +136,7 @@ function ald_blog_reading_time() {
     $content = get_post_field( 'post_content', get_the_ID() );
     $count   = str_word_count( strip_tags( $content ) );
     $time    = max( 1, floor( $count / 200 ) );
-    return ald_blog_to_bengali_number( $time );
+    return $time;
 }
 
 /**
