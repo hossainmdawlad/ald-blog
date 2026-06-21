@@ -60,6 +60,9 @@ function ald_blog_scripts() {
     // Main JS
     wp_enqueue_script( 'ald-blog-main', ALD_BLOG_URI . '/assets/js/main.js', array( 'ald-blog-dark-mode' ), ALD_BLOG_VERSION, true );
 
+    // Ensure jQuery is loaded (fixes plugins like AdRotate that depend on jQuery)
+    wp_enqueue_script( 'jquery' );
+
     // Localize for JS
     wp_localize_script( 'ald-blog-main', 'aldBlog', array(
         'ajaxUrl'  => admin_url( 'admin-ajax.php' ),
@@ -73,6 +76,20 @@ function ald_blog_scripts() {
     }
 }
 add_action( 'wp_enqueue_scripts', 'ald_blog_scripts' );
+
+/**
+ * Fix AdRotate plugin jQuery dependency
+ * AdRotate enqueues jquery.clicker.js without declaring jquery as a dependency
+ */
+function ald_blog_fix_adrotate_jquery() {
+    if ( wp_script_is( 'adrotate-clicker', 'enqueued' ) ) {
+        global $wp_scripts;
+        if ( isset( $wp_scripts->registered['adrotate-clicker'] ) ) {
+            $wp_scripts->registered['adrotate-clicker']->deps[] = 'jquery';
+        }
+    }
+}
+add_action( 'wp_enqueue_scripts', 'ald_blog_fix_adrotate_jquery', 999 );
 
 /**
  * Bengali Number Conversion

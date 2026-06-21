@@ -87,8 +87,7 @@
                     $addnews_url  = get_theme_mod( 'header_addnews_url', '#' );
                     ?>
                     <a href="<?php echo esc_url( $addnews_url ); ?>" class="btn-add-news" id="addNewsBtn">
-                        <span>+</span>
-                        <span class="hidden-sm"><?php echo esc_html( $addnews_text ); ?></span>
+                        <?php echo esc_html( $addnews_text ); ?>
                     </a>
                     <?php endif; ?>
                     <button class="btn-dark-mode" id="darkModeBtn" aria-label="Toggle dark mode">
